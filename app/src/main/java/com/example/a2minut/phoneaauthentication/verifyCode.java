@@ -74,8 +74,10 @@ public class verifyCode extends AppCompatActivity {
                           //  updateUI(user);
                         } else {
                            // Log.w(TAG, "linkWithCredential:failure", task.getException());
-                            Toast.makeText(verifyCode.this, "Authentication failed.",
+                            Toast.makeText(verifyCode.this, task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
+                            mAuth.getCurrentUser().delete();
+                            startActivity(new Intent());
                            // updateUI(null);
                         }
 
