@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.TaskExecutors;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
@@ -61,7 +62,26 @@ public class verifyCode extends AppCompatActivity {
     private void verifyCode(String code){
 
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationID,code);
-        signInWithCredential(credential);
+       // signInWithCredential(credential);
+
+        mAuth.getCurrentUser().linkWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            //Log.d(TAG, "linkWithCredential:success");
+                            FirebaseUser user = task.getResult().getUser();
+                          //  updateUI(user);
+                        } else {
+                           // Log.w(TAG, "linkWithCredential:failure", task.getException());
+                            Toast.makeText(verifyCode.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                           // updateUI(null);
+                        }
+
+                        // ...
+                    }
+                });
 
     }
 

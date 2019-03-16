@@ -65,6 +65,8 @@ public class login extends AppCompatActivity {
         String emailText =email.getText().toString();
         String passText = pass.getText().toString();
 
+
+
         mAuth.createUserWithEmailAndPassword(emailText,passText).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
