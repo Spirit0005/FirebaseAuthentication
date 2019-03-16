@@ -38,26 +38,27 @@ public class login extends AppCompatActivity {
 
         Button mEmailSignInButton = findViewById(R.id.email_sign_in_button2);
 
-//        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                phoneNum = mPhone.getText().toString();
-//                if(phoneNum.isEmpty()){
-//                    Toast.makeText(login.this,"Input Number",Toast.LENGTH_LONG).show();
-//                    return;
-//                }
-//                Intent intent = new Intent(login.this,verifyCode.class);
-//                intent.putExtra("Phonenumber", phoneNum);
-//                startActivity(intent);
-//            }
-//        });
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+
+                phoneNum = mPhone.getText().toString();
+                if(phoneNum.isEmpty()){
+                    Toast.makeText(login.this,"Input Number",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Intent intent = new Intent(login.this,verifyCode.class);
+                intent.putExtra("Phonenumber", phoneNum);
                 createUser();
+                startActivity(intent);
             }
         });
+//        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                createUser();
+//            }
+//        });
     }
 
     private void createUser(){
