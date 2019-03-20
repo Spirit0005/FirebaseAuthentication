@@ -61,7 +61,7 @@ public class verifyCode extends AppCompatActivity {
 
     private void verifyCode(String code){
 
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationID,code);
+       final  PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationID,code);
        // signInWithCredential(credential);
 
         mAuth.getCurrentUser().linkWithCredential(credential)
@@ -72,6 +72,8 @@ public class verifyCode extends AppCompatActivity {
                             //Log.d(TAG, "linkWithCredential:success");
                             FirebaseUser user = task.getResult().getUser();
                           //  updateUI(user);
+                           // signInWithCredential(credential);
+                            mAuth.signInWithCredential(credential);
                         } else {
                            // Log.w(TAG, "linkWithCredential:failure", task.getException());
                             Toast.makeText(verifyCode.this, task.getException().getMessage(),
