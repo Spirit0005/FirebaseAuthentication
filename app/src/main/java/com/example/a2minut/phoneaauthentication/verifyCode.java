@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,13 +22,16 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.example.a2minut.phoneaauthentication.login.mAuth;
+
 public class verifyCode extends AppCompatActivity {
 
 
-    private String phoneNum, verificationID;
+    private String phoneNum, verificationID,user1;
     private Button verify_btn;
-    private FirebaseAuth mAuth;
+   // private FirebaseAuth mAuth;
     private EditText code1;
+    private TextView textview1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +39,10 @@ public class verifyCode extends AppCompatActivity {
         setContentView(R.layout.activity_verify_code);
 
 
-        mAuth = FirebaseAuth.getInstance();
+        //mAuth = FirebaseAuth.getInstance();
         phoneNum = getIntent().getStringExtra("Phonenumber");
         code1 = findViewById(R.id.code1);
+//        textview1.findViewById(R.id.textView1);
         verify_btn = findViewById(R.id.verify_btn);
         verify_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +67,7 @@ public class verifyCode extends AppCompatActivity {
     private void verifyCode(String code){
 
        final  PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationID,code);
-       // signInWithCredential(credential);
+        //signInWithCredential(credential);
 
         mAuth.getCurrentUser().linkWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -71,15 +76,16 @@ public class verifyCode extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             //Log.d(TAG, "linkWithCredential:success");
                             FirebaseUser user = task.getResult().getUser();
-                          //  updateUI(user);
-                           // signInWithCredential(credential);
-                            mAuth.signInWithCredential(credential);
+                            user1 = user.getEmail();
+                            updateUI(user);
+                            signInWithCredential(credential);
+                           // mAuth.signInWithCredential(credential);
                         } else {
                            // Log.w(TAG, "linkWithCredential:failure", task.getException());
                             Toast.makeText(verifyCode.this, task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                             mAuth.getCurrentUser().delete();
-                            startActivity(new Intent());
+                          //  startActivity(new Intent());
                            // updateUI(null);
                         }
 
@@ -88,6 +94,13 @@ public class verifyCode extends AppCompatActivity {
                 });
 
     }
+
+    private void updateUI(FirebaseUser user) {
+
+        //textview1.setText("Welcome"  + user.getEmail());
+
+    }
+
 
     private void signInWithCredential(PhoneAuthCredential credential) {
 
@@ -99,7 +112,9 @@ public class verifyCode extends AppCompatActivity {
 
                     Intent intent = new Intent(new Intent(verifyCode.this,Home.class));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                   // intent.putExtra("Name",user1);
                     startActivity(intent);
+
 
                     Toast.makeText(verifyCode.this,"Approved",Toast.LENGTH_LONG).show();
 
@@ -149,4 +164,6 @@ public class verifyCode extends AppCompatActivity {
             Toast.makeText(verifyCode.this,e.getMessage(),Toast.LENGTH_LONG).show();
         }
     };
+
+
 }

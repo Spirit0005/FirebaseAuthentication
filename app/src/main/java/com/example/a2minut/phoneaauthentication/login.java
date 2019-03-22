@@ -21,7 +21,7 @@ public class login extends AppCompatActivity {
 
     private EditText mPhone,email,pass;
     private String phoneNum = "0";
-    private FirebaseAuth mAuth;
+    public static  FirebaseAuth mAuth;
 
 
 
@@ -47,18 +47,12 @@ public class login extends AppCompatActivity {
                     Toast.makeText(login.this,"Input Number",Toast.LENGTH_LONG).show();
                     return;
                 }
-                Intent intent = new Intent(login.this,verifyCode.class);
-                intent.putExtra("Phonenumber", phoneNum);
+
                 createUser();
-                startActivity(intent);
+
             }
         });
-//        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                createUser();
-//            }
-//        });
+
     }
 
     private void createUser(){
@@ -72,9 +66,13 @@ public class login extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+
+                    Intent intent = new Intent(login.this,verifyCode.class);
+                    intent.putExtra("Phonenumber", phoneNum);
+                    startActivity(intent);
                     // Sign in success, update UI with the signed-in user's information
                     //Log.d(TAG, "createUserWithEmail:success");
-                    FirebaseUser user = mAuth.getCurrentUser();
+                    //FirebaseUser user = mAuth.getCurrentUser();
                     //updateUI(user);
                 } else {
                     // If sign in fails, display a message to the user.
